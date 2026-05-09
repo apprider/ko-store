@@ -1,0 +1,263 @@
+{
+  "$schema": "https://raw.githubusercontent.com/apprider/moona-store/main/schemas/agent-manifest-v1.json",
+  "id": "ai.moona.agents.coder",
+  "name": "coder",
+  "version": "2.1.0",
+  "displayName": "Coder \ud83d\udcbb",
+  "description": "Expert software engineer for code generation, review, and debugging",
+  "longDescription": "Coder is an expert software engineer agent specialized in reading, writing, and analyzing code. It supports 50+ programming languages with deep expertise in Rust, Python, TypeScript, and Go.",
+  "author": {
+    "name": "Moona AI",
+    "email": "agents@moona.run",
+    "url": "https://moona.run"
+  },
+  "license": "MIT",
+  "homepage": "https://moona.run/agents/coder",
+  "repository": "https://github.com/apprider/moona",
+  "category": "development",
+  "tags": [
+    "coding",
+    "software-engineering",
+    "debugging",
+    "review",
+    "implementation"
+  ],
+  "runtime": {
+    "type": "llm",
+    "schedule": "on_demand",
+    "model": {
+      "provider": "anthropic",
+      "name": "claude-sonnet-4-20250514",
+      "apiKeyEnv": "ANTHROPIC_API_KEY",
+      "params": {
+        "temperature": 0.3,
+        "maxTokens": 8192,
+        "topP": 0.95
+      },
+      "fallbacks": [
+        {
+          "provider": "openai",
+          "name": "gpt-4-turbo",
+          "apiKeyEnv": "OPENAI_API_KEY"
+        },
+        {
+          "provider": "groq",
+          "name": "llama-3.3-70b-versatile",
+          "apiKeyEnv": "GROQ_API_KEY"
+        }
+      ]
+    },
+    "systemPrompt": "system_prompt.md"
+  },
+  "resources": {
+    "maxLlmTokensPerHour": 500000,
+    "maxConcurrentTools": 10,
+    "maxExecutionTimeSeconds": 300,
+    "maxMemoryBytes": 536870912,
+    "maxFileSizeBytes": 10485760,
+    "maxShellTimeSeconds": 120
+  },
+  "dependencies": {
+    "agents": [
+      {
+        "id": "ai.moona.agents.researcher",
+        "version": ">=1.0.0",
+        "optional": true,
+        "purpose": "Web research for complex queries"
+      }
+    ],
+    "mcpServers": [
+      {
+        "name": "github",
+        "capabilities": [
+          "issues",
+          "pull_requests",
+          "repositories"
+        ]
+      }
+    ]
+  },
+  "a2a": {
+    "enabled": true,
+    "endpoint": "/a2a/coder",
+    "capabilities": {
+      "streaming": true,
+      "pushNotifications": true,
+      "contentTypes": [
+        "text/plain",
+        "text/markdown",
+        "application/json",
+        "text/code"
+      ]
+    },
+    "skills": [
+      {
+        "id": "code_generation",
+        "name": "Code Generation",
+        "description": "Generate code in any programming language",
+        "tags": [
+          "code",
+          "generation",
+          "programming"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "language": {
+              "type": "string",
+              "description": "Target programming language"
+            },
+            "requirements": {
+              "type": "string",
+              "description": "Code requirements description"
+            }
+          },
+          "required": [
+            "language"
+          ]
+        }
+      },
+      {
+        "id": "code_review",
+        "name": "Code Review",
+        "description": "Review code for bugs, security issues, and improvements",
+        "tags": [
+          "review",
+          "security",
+          "quality"
+        ]
+      }
+    ],
+    "extensions": [
+      {
+        "uri": "https://moona.run/extensions/memory",
+        "required": false,
+        "description": "Persistent memory support"
+      }
+    ]
+  },
+  "security": {
+    "trustLevel": "trusted",
+    "requiresApprovalFor": [
+      "file_delete",
+      "network_external"
+    ],
+    "auditLevel": "detailed",
+    "contentPolicy": "default-src 'self'; script-src 'none'"
+  },
+  "memory": {
+    "defaultScope": "episodic",
+    "types": [
+      "short_term",
+      "working",
+      "episodic"
+    ],
+    "maxEntries": {
+      "shortTerm": 100,
+      "working": 50,
+      "semantic": 1000
+    },
+    "consolidation": {
+      "enabled": true,
+      "intervalHours": 24
+    }
+  },
+  "checkpoint": {
+    "enabled": true,
+    "frequency": "turn",
+    "maxRetained": 10,
+    "storage": "disk"
+  },
+  "marketplace": {
+    "visibility": "public",
+    "pricing": "free",
+    "minVersion": "0.5.0",
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ]
+  },
+  "telemetry": {
+    "tracingEnabled": true,
+    "metricsEnabled": true,
+    "logLevel": "info"
+  },
+  "tools": {
+    "builtin": [
+      "file_read",
+      "file_write",
+      "file_list",
+      "file_delete",
+      "shell_exec",
+      "web_search",
+      "web_fetch",
+      "memory_store",
+      "memory_recall"
+    ],
+    "extensions": [],
+    "mcp": []
+  },
+  "permissions": {
+    "network": [
+      "*"
+    ],
+    "filesystem": {
+      "read": [
+        "${workspace}/**",
+        "${home}/.ssh/**"
+      ],
+      "write": [
+        "${workspace}/**"
+      ],
+      "delete": [
+        "${workspace}/**"
+      ]
+    },
+    "memory": {
+      "read": [
+        "*"
+      ],
+      "write": [
+        "self.*",
+        "shared.code.*"
+      ]
+    },
+    "shell": {
+      "allow": [
+        "cargo *",
+        "npm *",
+        "git *",
+        "python *",
+        "rustc *",
+        "go *",
+        "make *",
+        "docker *"
+      ],
+      "requireApproval": [
+        "rm -rf *",
+        "sudo *",
+        "git push --force *"
+      ]
+    },
+    "a2a": {
+      "canInvokeAgents": true,
+      "agentAllowlist": [],
+      "skillAllowlist": []
+    }
+  },
+  "knowledge": {
+    "packs": [
+      {
+        "name": "github",
+        "enabled": true,
+        "path": "skills/github"
+      },
+      {
+        "name": "web-search",
+        "enabled": true,
+        "path": "skills/web-search"
+      }
+    ]
+  }
+}

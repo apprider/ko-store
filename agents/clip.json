@@ -1,0 +1,242 @@
+{
+  "$schema": "../schemas/agent-manifest-v1.json",
+  "id": "ai.moona.clip",
+  "name": "clip",
+  "displayName": "Clip",
+  "version": "1.0.0",
+  "description": "Turns long-form video into viral short clips with captions and thumbnails",
+  "category": "productivity",
+  "tags": [
+    "video",
+    "shorts",
+    "automation",
+    "content-creation"
+  ],
+  "runtime": {
+    "type": "llm",
+    "schedule": "autonomous",
+    "systemPrompt": "file://system_prompt.md",
+    "model": {
+      "provider": "default",
+      "name": "default",
+      "params": {
+        "maxTokens": 8192,
+        "temperature": 0.4
+      }
+    }
+  },
+  "execution": {
+    "maxIterations": 40,
+    "heartbeatIntervalSecs": 60,
+    "checkIntervalSecs": 3600,
+    "maxRestarts": 10,
+    "allowHeartbeatRequest": true
+  },
+  "resources": {
+    "maxLlmTokensPerHour": 500000,
+    "maxConcurrentTools": 5,
+    "maxExecutionTimeSeconds": 1800,
+    "maxMemoryBytes": 1073741824,
+    "maxFileSizeBytes": 524288000
+  },
+  "requirements": [
+    {
+      "key": "ffmpeg",
+      "label": "FFmpeg",
+      "type": "binary",
+      "checkValue": "ffmpeg",
+      "description": "Core video processing engine for extracting clips, burning captions, and generating thumbnails",
+      "install": {
+        "macos": "brew install ffmpeg",
+        "windows": "winget install Gyan.FFmpeg",
+        "linuxApt": "sudo apt install ffmpeg",
+        "linuxDnf": "sudo dnf install ffmpeg-free",
+        "linuxPacman": "sudo pacman -S ffmpeg",
+        "manualUrl": "https://ffmpeg.org/download.html",
+        "estimatedTime": "2-5 min"
+      }
+    },
+    {
+      "key": "yt-dlp",
+      "label": "yt-dlp",
+      "type": "binary",
+      "checkValue": "yt-dlp",
+      "description": "Downloads videos from YouTube, Vimeo, Twitter, and 1000+ other sites",
+      "install": {
+        "macos": "brew install yt-dlp",
+        "windows": "winget install yt-dlp.yt-dlp",
+        "linuxApt": "sudo apt install yt-dlp",
+        "pip": "pip install yt-dlp",
+        "manualUrl": "https://github.com/yt-dlp/yt-dlp#installation",
+        "estimatedTime": "1-2 min"
+      }
+    }
+  ],
+  "settings": [
+    {
+      "key": "stt_provider",
+      "label": "Speech-to-Text Provider",
+      "description": "How audio is transcribed to text for captions",
+      "type": "select",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto-detect (best available)"
+        },
+        {
+          "value": "whisper_local",
+          "label": "Local Whisper",
+          "binary": "whisper"
+        },
+        {
+          "value": "groq",
+          "label": "Groq Whisper API",
+          "providerEnv": "GROQ_API_KEY"
+        },
+        {
+          "value": "openai",
+          "label": "OpenAI Whisper API",
+          "providerEnv": "OPENAI_API_KEY"
+        }
+      ]
+    },
+    {
+      "key": "tts_provider",
+      "label": "Text-to-Speech Provider",
+      "description": "Optional voice-over generation for clips",
+      "type": "select",
+      "default": "none",
+      "options": [
+        {
+          "value": "none",
+          "label": "Disabled (captions only)"
+        },
+        {
+          "value": "edge_tts",
+          "label": "Edge TTS (free)",
+          "binary": "edge-tts"
+        },
+        {
+          "value": "openai",
+          "label": "OpenAI TTS",
+          "providerEnv": "OPENAI_API_KEY"
+        }
+      ]
+    },
+    {
+      "key": "publish_target",
+      "label": "Publish Clips To",
+      "description": "Where to send finished clips",
+      "type": "select",
+      "default": "local_only",
+      "options": [
+        {
+          "value": "local_only",
+          "label": "Local only (no publishing)"
+        },
+        {
+          "value": "telegram",
+          "label": "Telegram channel"
+        },
+        {
+          "value": "whatsapp",
+          "label": "WhatsApp"
+        },
+        {
+          "value": "both",
+          "label": "Telegram + WhatsApp"
+        }
+      ]
+    }
+  ],
+  "dashboard": [
+    {
+      "label": "Jobs Completed",
+      "memoryKey": "clip_runner_jobs_completed",
+      "format": "number"
+    },
+    {
+      "label": "Clips Generated",
+      "memoryKey": "clip_runner_clips_generated",
+      "format": "number"
+    },
+    {
+      "label": "Total Duration",
+      "memoryKey": "clip_runner_total_duration_secs",
+      "format": "duration"
+    },
+    {
+      "label": "Published",
+      "memoryKey": "clip_runner_clips_published",
+      "format": "number"
+    }
+  ],
+  "artifacts": [
+    {
+      "artifactType": "video",
+      "extension": "mp4",
+      "label": "Clip Video",
+      "persistent": true,
+      "maxRetained": 10
+    },
+    {
+      "artifactType": "thumbnail",
+      "extension": "jpg",
+      "label": "Thumbnail",
+      "persistent": true,
+      "maxRetained": 10
+    },
+    {
+      "artifactType": "subtitle",
+      "extension": "srt",
+      "label": "Captions",
+      "persistent": false
+    }
+  ],
+  "marketplace": {
+    "visibility": "public",
+    "pricing": "free",
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ]
+  },
+  "tools": {
+    "builtin": [
+      "shell_exec",
+      "file_read",
+      "file_write",
+      "file_list",
+      "web_fetch",
+      "memory_store",
+      "memory_recall"
+    ],
+    "extensions": [],
+    "mcp": []
+  },
+  "permissions": {
+    "network": [
+      "*"
+    ],
+    "memory": {
+      "read": [
+        "*"
+      ],
+      "write": [
+        "self.*"
+      ]
+    },
+    "shell": {
+      "allow": [
+        "ffmpeg",
+        "ffprobe",
+        "yt-dlp",
+        "whisper",
+        "curl",
+        "python"
+      ]
+    }
+  }
+}

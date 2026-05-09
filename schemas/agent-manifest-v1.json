@@ -1,0 +1,670 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://moona.run/schemas/agent-manifest-v1.json",
+  "title": "Moona Agent Manifest",
+  "description": "Schema for Moona Agent OS agent package manifest",
+  "type": "object",
+  "required": ["id", "name", "version", "runtime"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri",
+      "description": "JSON Schema reference"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(\\.[a-z0-9]+)+$",
+      "description": "Unique agent identifier in reverse-domain notation (e.g., ai.moona.agents.coder)",
+      "examples": ["ai.moona.agents.coder", "ai.moona.agents.researcher"]
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[a-zA-Z0-9_-]+$",
+      "description": "Short name for the agent (used in CLI commands)"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9.]+)?$",
+      "description": "Semantic version (semver)"
+    },
+    "displayName": {
+      "type": "string",
+      "maxLength": 128,
+      "description": "Human-readable display name (may include emoji)"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Short description of what this agent does"
+    },
+    "longDescription": {
+      "type": "string",
+      "description": "Detailed description (Markdown supported)"
+    },
+    "author": {
+      "$ref": "#/$defs/author"
+    },
+    "license": {
+      "type": "string",
+      "description": "SPDX license identifier",
+      "examples": ["MIT", "Apache-2.0", "Proprietary"]
+    },
+    "homepage": {
+      "type": "string",
+      "format": "uri"
+    },
+    "repository": {
+      "type": "string",
+      "format": "uri"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "development", "research", "writing", "analysis", "automation",
+        "communication", "data", "security", "finance", "health",
+        "education", "creative", "productivity", "other"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "maxItems": 20
+    },
+    "runtime": {
+      "$ref": "#/$defs/runtime"
+    },
+    "tools": {
+      "$ref": "#/$defs/toolsConfig"
+    },
+    "knowledge": {
+      "$ref": "#/$defs/knowledgeConfig"
+    },
+    "permissions": {
+      "$ref": "#/$defs/permissions"
+    },
+    "resources": {
+      "$ref": "#/$defs/resources"
+    },
+    "dependencies": {
+      "$ref": "#/$defs/dependencies"
+    },
+    "a2a": {
+      "$ref": "#/$defs/a2a"
+    },
+    "security": {
+      "$ref": "#/$defs/security"
+    },
+    "memory": {
+      "$ref": "#/$defs/memory"
+    },
+    "checkpoint": {
+      "$ref": "#/$defs/checkpoint"
+    },
+    "marketplace": {
+      "$ref": "#/$defs/marketplace"
+    },
+    "modules": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/module" }
+    },
+    "hooks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/hook" }
+    },
+    "telemetry": {
+      "$ref": "#/$defs/telemetry"
+    },
+    "execution": {
+      "type": "object",
+      "description": "Execution configuration for autonomous agents"
+    },
+    "requirements": {
+      "type": "array",
+      "description": "Runtime requirements"
+    },
+    "settings": {
+      "type": "array",
+      "description": "Configurable settings for this agent"
+    },
+    "dashboard": {
+      "type": "array",
+      "description": "Dashboard widget definitions"
+    },
+    "artifacts": {
+      "type": "array",
+      "description": "Artifact definitions produced by this agent"
+    },
+    "surfaces": {
+      "$ref": "#/$defs/surfacesConfig",
+      "description": "Declares how this agent can be reached (channels, API surface)"
+    }
+  },
+  "$defs": {
+    "author": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "url": { "type": "string", "format": "uri" }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["llm", "wasm", "python", "hybrid"],
+          "default": "llm"
+        },
+        "module": {
+          "type": "string",
+          "description": "Path to module file (for WASM/Python)"
+        },
+        "schedule": {
+          "type": "string",
+          "enum": ["on_demand", "cron", "autonomous"],
+          "default": "on_demand"
+        },
+        "model": {
+          "$ref": "#/$defs/model"
+        },
+        "systemPrompt": {
+          "type": "string",
+          "description": "Path to system prompt file (relative to package root)",
+          "default": "system_prompt.md"
+        },
+        "systemPromptInline": {
+          "type": "string",
+          "description": "Inline system prompt text. Takes precedence over systemPrompt file path. Use for self-contained agent.json files."
+        },
+        "userPrompt": {
+          "type": "string",
+          "description": "Path to user prompt template (optional)"
+        }
+      }
+    },
+    "model": {
+      "type": "object",
+      "required": ["provider"],
+      "properties": {
+        "provider": {
+          "type": "string",
+          "description": "LLM provider name or 'default' for system default"
+        },
+        "name": {
+          "type": "string",
+          "description": "Model identifier (e.g., 'claude-sonnet-4-20250514')"
+        },
+        "apiKeyEnv": {
+          "type": "string",
+          "description": "Environment variable name for API key"
+        },
+        "params": {
+          "type": "object",
+          "properties": {
+            "temperature": { "type": "number", "minimum": 0, "maximum": 2 },
+            "maxTokens": { "type": "integer", "minimum": 1 },
+            "topP": { "type": "number", "minimum": 0, "maximum": 1 },
+            "frequencyPenalty": { "type": "number", "minimum": -2, "maximum": 2 },
+            "presencePenalty": { "type": "number", "minimum": -2, "maximum": 2 }
+          }
+        },
+        "fallbacks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["provider"],
+            "properties": {
+              "provider": { "type": "string" },
+              "name": { "type": "string" },
+              "apiKeyEnv": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "toolsConfig": {
+      "type": "object",
+      "description": "Callable tools this agent can invoke",
+      "properties": {
+        "builtin": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Built-in tools ([] = none, ['*'] = all, named list = specific tools)"
+        },
+        "extensions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/extensionRef" },
+          "description": "Extension packages that provide additional callable tools"
+        },
+        "mcp": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "MCP server names whose tools are included"
+        }
+      }
+    },
+    "extensionRef": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "enabled": { "type": "boolean", "default": true },
+        "tools": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Specific tools from this extension (empty = all)"
+        }
+      }
+    },
+    "knowledgeConfig": {
+      "type": "object",
+      "description": "Context injected into the system prompt",
+      "properties": {
+        "packs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/knowledgePackRef" },
+          "description": "Knowledge packs to inject as context"
+        }
+      }
+    },
+    "knowledgePackRef": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "enabled": { "type": "boolean", "default": true },
+        "version": { "type": "string" },
+        "path": {
+          "type": "string",
+          "description": "Path to bundled pack directory (relative to agent package)"
+        }
+      }
+    },
+    "permissions": {
+      "type": "object",
+      "description": "OS-level security grants (network, filesystem, memory, shell, a2a)",
+      "properties": {
+        "network": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Allowed network patterns (empty = no network, '*' = all)"
+        },
+        "filesystem": {
+          "type": "object",
+          "properties": {
+            "read": { "type": "array", "items": { "type": "string" } },
+            "write": { "type": "array", "items": { "type": "string" } },
+            "delete": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "memory": {
+          "type": "object",
+          "properties": {
+            "read": { "type": "array", "items": { "type": "string" } },
+            "write": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "shell": {
+          "type": "object",
+          "properties": {
+            "allow": { "type": "array", "items": { "type": "string" } },
+            "requireApproval": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "a2a": {
+          "type": "object",
+          "properties": {
+            "canInvokeAgents": { "type": "boolean", "default": false },
+            "agentAllowlist": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "properties": {
+        "maxLlmTokensPerHour": {
+          "type": "integer",
+          "minimum": 1000,
+          "default": 100000
+        },
+        "maxConcurrentTools": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 5
+        },
+        "maxExecutionTimeSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 300
+        },
+        "maxMemoryBytes": {
+          "type": "integer",
+          "minimum": 1048576,
+          "default": 268435456
+        },
+        "maxFileSizeBytes": {
+          "type": "integer",
+          "minimum": 1024,
+          "default": 10485760
+        },
+        "maxShellTimeSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 60
+        }
+      }
+    },
+    "dependencies": {
+      "type": "object",
+      "properties": {
+        "agents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": { "type": "string" },
+              "version": { "type": "string" },
+              "optional": { "type": "boolean", "default": false },
+              "purpose": { "type": "string" }
+            }
+          }
+        },
+        "mcpServers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": { "type": "string" },
+              "tools": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "a2a": {
+      "type": "object",
+      "description": "A2A protocol configuration for inter-agent communication",
+      "properties": {
+        "enabled": { "type": "boolean", "default": true },
+        "endpoint": {
+          "type": "string",
+          "description": "Relative A2A endpoint URL"
+        },
+        "capabilities": {
+          "type": "object",
+          "properties": {
+            "streaming": { "type": "boolean", "default": true },
+            "pushNotifications": { "type": "boolean", "default": false },
+            "contentTypes": {
+              "type": "array",
+              "items": { "type": "string" },
+              "default": ["text/plain", "text/markdown", "application/json"]
+            }
+          }
+        },
+        "skills": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name"],
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "tags": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "inputSchema": {
+                "type": "object",
+                "description": "JSON Schema for skill input"
+              }
+            }
+          }
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["uri"],
+            "properties": {
+              "uri": { "type": "string", "format": "uri" },
+              "required": { "type": "boolean", "default": false },
+              "description": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "security": {
+      "type": "object",
+      "properties": {
+        "trustLevel": {
+          "type": "string",
+          "enum": ["untrusted", "standard", "trusted", "elevated"],
+          "default": "standard"
+        },
+        "requiresApprovalFor": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["shell_exec", "file_delete", "network_external", "memory_write"]
+          }
+        },
+        "auditLevel": {
+          "type": "string",
+          "enum": ["none", "basic", "detailed", "full"],
+          "default": "basic"
+        },
+        "contentPolicy": {
+          "type": "string",
+          "description": "CSP-style content security policy"
+        }
+      }
+    },
+    "memory": {
+      "type": "object",
+      "properties": {
+        "defaultScope": {
+          "type": "string",
+          "enum": ["session", "episodic", "permanent"],
+          "default": "episodic"
+        },
+        "types": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["short_term", "working", "semantic", "episodic"]
+          },
+          "default": ["short_term", "working"]
+        },
+        "maxEntries": {
+          "type": "object",
+          "properties": {
+            "shortTerm": { "type": "integer", "default": 100 },
+            "working": { "type": "integer", "default": 50 },
+            "semantic": { "type": "integer", "default": 1000 }
+          }
+        },
+        "consolidation": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": true },
+            "intervalHours": { "type": "integer", "default": 24 }
+          }
+        }
+      }
+    },
+    "checkpoint": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean", "default": true },
+        "frequency": {
+          "type": "string",
+          "enum": ["message", "turn", "task", "manual"],
+          "default": "turn"
+        },
+        "maxRetained": { "type": "integer", "default": 10 },
+        "storage": {
+          "type": "string",
+          "enum": ["memory", "disk", "remote"],
+          "default": "disk"
+        }
+      }
+    },
+    "marketplace": {
+      "type": "object",
+      "properties": {
+        "visibility": {
+          "type": "string",
+          "enum": ["public", "private", "unlisted"],
+          "default": "public"
+        },
+        "pricing": {
+          "type": "string",
+          "enum": ["free", "premium", "subscription"],
+          "default": "free"
+        },
+        "minVersion": {
+          "type": "string",
+          "description": "Minimum Moona OS version required"
+        },
+        "maxVersion": {
+          "type": "string",
+          "description": "Maximum Moona OS version supported (empty = any)"
+        },
+        "platforms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["linux", "macos", "windows"]
+          },
+          "default": ["linux", "macos", "windows"]
+        }
+      }
+    },
+    "module": {
+      "type": "object",
+      "required": ["type", "path"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["wasm", "python"]
+        },
+        "path": { "type": "string" },
+        "entrypoint": { "type": "string" },
+        "grants": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Capability grants for this module"
+        }
+      }
+    },
+    "hook": {
+      "type": "object",
+      "required": ["event", "handler"],
+      "properties": {
+        "event": {
+          "type": "string",
+          "enum": [
+            "before_spawn", "after_spawn", "before_message", "after_message",
+            "before_tool_call", "after_tool_call", "on_error", "on_checkpoint",
+            "on_suspend", "on_resume", "on_terminate"
+          ]
+        },
+        "handler": {
+          "type": "string",
+          "description": "Path to handler function (module-path:function-name)"
+        }
+      }
+    },
+    "telemetry": {
+      "type": "object",
+      "properties": {
+        "tracingEnabled": { "type": "boolean", "default": true },
+        "metricsEnabled": { "type": "boolean", "default": true },
+        "logLevel": {
+          "type": "string",
+          "enum": ["error", "warn", "info", "debug"],
+          "default": "info"
+        },
+        "tracesEndpoint": { "type": "string", "format": "uri" },
+        "metricsEndpoint": { "type": "string", "format": "uri" }
+      }
+    },
+    "surfacesConfig": {
+      "type": "object",
+      "description": "Declares which surfaces (channels, API) this agent is available on",
+      "properties": {
+        "channels": {
+          "type": "array",
+          "description": "Messaging channel surfaces",
+          "items": { "$ref": "#/$defs/channelSurfaceConfig" }
+        },
+        "api": {
+          "$ref": "#/$defs/apiSurfaceConfig"
+        }
+      }
+    },
+    "channelSurfaceConfig": {
+      "type": "object",
+      "required": ["channel"],
+      "description": "Per-channel surface declaration",
+      "properties": {
+        "channel": {
+          "type": "string",
+          "description": "Channel type key matching config.toml section names: 'slack', 'telegram', 'discord', 'whatsapp', 'email', etc."
+        },
+        "role": {
+          "type": "string",
+          "enum": ["default", "exclusive", "available"],
+          "default": "default",
+          "description": "Agent role on this channel. 'default' = auto-handle when no explicit binding/config override. 'exclusive' = always handle, config.toml cannot override. 'available' = can be bound manually, not auto-default."
+        },
+        "dmPolicy": {
+          "type": "string",
+          "enum": ["allow", "allowedOnly", "ignore"],
+          "description": "Direct message policy override for this channel"
+        },
+        "groupPolicy": {
+          "type": "string",
+          "enum": ["all", "allowIfMentioned", "commandsOnly", "ignore"],
+          "description": "Group/channel message policy override"
+        },
+        "outputFormat": {
+          "type": "string",
+          "enum": ["markdown", "slackMrkdwn", "telegramHtml", "plainText"],
+          "description": "Output format override for this channel"
+        },
+        "systemPrompt": {
+          "type": "string",
+          "description": "Channel-specific system prompt appended after the main system prompt. Use 'file://path.md' for file reference."
+        }
+      }
+    },
+    "apiSurfaceConfig": {
+      "type": "object",
+      "description": "API surface configuration",
+      "properties": {
+        "openaiCompat": {
+          "type": "boolean",
+          "default": false,
+          "description": "Expose this agent in the OpenAI-compatible /v1/models endpoint"
+        }
+      }
+    }
+  }
+}

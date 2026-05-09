@@ -1,0 +1,167 @@
+{
+  "$schema": "https://raw.githubusercontent.com/apprider/moona-store/main/schemas/agent-manifest-v1.json",
+  "id": "ai.moona.agents.researcher",
+  "name": "researcher",
+  "version": "1.5.0",
+  "displayName": "Researcher \ud83d\udd0d",
+  "description": "Web research and information synthesis agent",
+  "longDescription": "Researcher specializes in finding, analyzing, and synthesizing information from the web. It can search multiple sources, compare findings, and produce comprehensive research reports.",
+  "author": {
+    "name": "Moona AI",
+    "email": "agents@moona.run",
+    "url": "https://moona.run"
+  },
+  "license": "MIT",
+  "homepage": "https://moona.run/agents/researcher",
+  "repository": "https://github.com/apprider/moona",
+  "category": "research",
+  "tags": [
+    "research",
+    "web-search",
+    "analysis",
+    "synthesis",
+    "reports"
+  ],
+  "runtime": {
+    "type": "llm",
+    "schedule": "on_demand",
+    "model": {
+      "provider": "anthropic",
+      "name": "claude-sonnet-4-20250514",
+      "apiKeyEnv": "ANTHROPIC_API_KEY",
+      "params": {
+        "temperature": 0.5,
+        "maxTokens": 16384
+      }
+    },
+    "systemPrompt": "system_prompt.md"
+  },
+  "resources": {
+    "maxLlmTokensPerHour": 300000,
+    "maxConcurrentTools": 5,
+    "maxExecutionTimeSeconds": 600,
+    "maxMemoryBytes": 268435456
+  },
+  "a2a": {
+    "enabled": true,
+    "endpoint": "/a2a/researcher",
+    "capabilities": {
+      "streaming": true,
+      "pushNotifications": false,
+      "contentTypes": [
+        "text/plain",
+        "text/markdown",
+        "application/json"
+      ]
+    },
+    "skills": [
+      {
+        "id": "web_research",
+        "name": "Web Research",
+        "description": "Search and synthesize information from the web",
+        "tags": [
+          "research",
+          "web",
+          "search"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "Research query"
+            },
+            "depth": {
+              "type": "string",
+              "enum": [
+                "quick",
+                "standard",
+                "comprehensive"
+              ],
+              "default": "standard"
+            }
+          },
+          "required": [
+            "query"
+          ]
+        }
+      }
+    ]
+  },
+  "security": {
+    "trustLevel": "standard",
+    "requiresApprovalFor": [],
+    "auditLevel": "basic"
+  },
+  "marketplace": {
+    "visibility": "public",
+    "pricing": "free",
+    "minVersion": "0.5.0",
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ]
+  },
+  "tools": {
+    "builtin": [
+      "web_search",
+      "web_fetch",
+      "memory_store",
+      "memory_recall"
+    ],
+    "extensions": [],
+    "mcp": []
+  },
+  "permissions": {
+    "network": [
+      "*"
+    ],
+    "filesystem": {
+      "read": [
+        "${workspace}/**"
+      ],
+      "write": [
+        "${workspace}/**"
+      ],
+      "delete": []
+    },
+    "memory": {
+      "read": [
+        "*"
+      ],
+      "write": [
+        "self.*",
+        "shared.research.*"
+      ]
+    },
+    "shell": {
+      "allow": [],
+      "requireApproval": []
+    },
+    "a2a": {
+      "canInvokeAgents": false,
+      "agentAllowlist": [],
+      "skillAllowlist": []
+    }
+  },
+  "knowledge": {
+    "packs": [
+      {
+        "name": "web-search",
+        "enabled": true
+      }
+    ]
+  },
+  "surfaces": {
+    "channels": [
+      {
+        "channel": "slack",
+        "role": "available",
+        "dmPolicy": "allow",
+        "groupPolicy": "allowIfMentioned",
+        "outputFormat": "slackMrkdwn"
+      }
+    ]
+  }
+}
