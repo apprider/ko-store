@@ -109,7 +109,7 @@
       "label": "Inject Failure At Step",
       "description": "Simulate a hard failure at this step number to test the error-notification path (0 = never fail)",
       "type": "number",
-      "default": 0
+      "default": "0"
     }
   ],
   "dashboard": [
@@ -122,11 +122,6 @@
       "label": "Steps Run",
       "memoryKey": "demo_runner_steps_run",
       "format": "number"
-    },
-    {
-      "label": "Last Run Status",
-      "memoryKey": "demo_runner_last_status",
-      "format": "text"
     }
   ],
   "artifacts": [
