@@ -1,0 +1,169 @@
+{
+  "$schema": "https://raw.githubusercontent.com/apprider/ko-store/main/schemas/agent-manifest-v1.json",
+  "id": "ai.ko.agents.demorunner",
+  "name": "demo-runner",
+  "version": "1.0.0",
+  "displayName": "Demo Runner 🧪",
+  "description": "A fully-simulated multi-step workflow for testing durable jobs end-to-end",
+  "longDescription": "Demo Runner is a safe test agent for exercising Ko's durable task engine. It runs a fixed 6-step ops pipeline — gather requirements, draft a report, generate code, push the code / open a PR, send a notification email, and summarize — pacing one step per slice on the 'quick' cadence (~30s apart) so you can watch a durable job progress in real time. Every step is SIMULATED: it narrates a realistic outcome for Ko to relay but never touches your filesystem, repos, or email. A real publisher would swap the simulated steps for actual tool calls; the manifest already declares the shape that real version would take.",
+  "author": {
+    "name": "Ko AI",
+    "email": "agents@ko.run",
+    "url": "https://ko.run"
+  },
+  "license": "MIT",
+  "homepage": "https://ko.run/agents/demo-runner",
+  "repository": "https://github.com/apprider/ko",
+  "category": "automation",
+  "tags": [
+    "testing",
+    "workflow",
+    "durable",
+    "demo",
+    "simulation"
+  ],
+  "runtime": {
+    "type": "llm",
+    "schedule": "on_demand",
+    "model": {
+      "provider": "default",
+      "name": "default",
+      "params": {
+        "temperature": 0.4,
+        "maxTokens": 4096
+      }
+    },
+    "systemPrompt": "system_prompt.md"
+  },
+  "executionProfile": "quick",
+  "resources": {
+    "maxLlmTokensPerHour": 200000,
+    "maxConcurrentTools": 3,
+    "maxExecutionTimeSeconds": 120,
+    "maxMemoryBytes": 268435456
+  },
+  "a2a": {
+    "enabled": true,
+    "endpoint": "/a2a/demo-runner",
+    "capabilities": {
+      "streaming": true,
+      "pushNotifications": false,
+      "contentTypes": [
+        "text/plain",
+        "text/markdown",
+        "application/json"
+      ]
+    },
+    "skills": [
+      {
+        "id": "run_demo_workflow",
+        "name": "Run Demo Workflow",
+        "description": "Run the simulated 6-step ops pipeline (report → code → PR → email → summary) as a durable job",
+        "tags": [
+          "workflow",
+          "demo",
+          "durable"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "subject": {
+              "type": "string",
+              "description": "What the pipeline is nominally about (e.g. 'weekly metrics report for Acme'). Used to flavor the simulated outputs."
+            }
+          }
+        }
+      }
+    ]
+  },
+  "security": {
+    "trustLevel": "standard",
+    "requiresApprovalFor": [],
+    "auditLevel": "basic"
+  },
+  "checkpoint": {
+    "enabled": true,
+    "frequency": "task",
+    "storage": "disk"
+  },
+  "marketplace": {
+    "visibility": "public",
+    "pricing": "free",
+    "minVersion": "0.5.0",
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ]
+  },
+  "settings": [
+    {
+      "key": "subject",
+      "label": "Workflow Subject",
+      "description": "What the simulated pipeline is about — flavors the fake outputs",
+      "type": "text",
+      "default": "weekly metrics report"
+    },
+    {
+      "key": "fail_at_step",
+      "label": "Inject Failure At Step",
+      "description": "Simulate a hard failure at this step number to test the error-notification path (0 = never fail)",
+      "type": "number",
+      "default": 0
+    }
+  ],
+  "dashboard": [
+    {
+      "label": "Workflows Completed",
+      "memoryKey": "demo_runner_workflows_completed",
+      "format": "number"
+    },
+    {
+      "label": "Steps Run",
+      "memoryKey": "demo_runner_steps_run",
+      "format": "number"
+    },
+    {
+      "label": "Last Run Status",
+      "memoryKey": "demo_runner_last_status",
+      "format": "text"
+    }
+  ],
+  "artifacts": [
+    {
+      "artifactType": "report",
+      "extension": "md",
+      "label": "Simulated Report",
+      "persistent": false
+    }
+  ],
+  "tools": {
+    "builtin": [
+      "memory_store",
+      "memory_recall"
+    ],
+    "extensions": [],
+    "mcp": []
+  },
+  "permissions": {
+    "network": [],
+    "filesystem": {
+      "read": [],
+      "write": [],
+      "delete": []
+    },
+    "memory": {
+      "read": [
+        "self.*"
+      ],
+      "write": [
+        "self.*"
+      ]
+    },
+    "a2a": {
+      "canInvokeAgents": false,
+      "agentAllowlist": [],
+      "skillAllowlist": []
+    }
+  }
+}

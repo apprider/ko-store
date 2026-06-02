@@ -11,8 +11,13 @@ marketplace/
 │   └── agent-manifest-v1.json  # JSON Schema for agent manifests
 ├── agents/
 │   ├── coder.json          # Agent manifests
+│   ├── coder/system_prompt.md
 │   ├── researcher.json
-│   └── orchestrator.json
+│   ├── researcher/system_prompt.md
+│   ├── clip.json
+│   ├── clip/system_prompt.md
+│   ├── demo-runner.json
+│   └── demo-runner/system_prompt.md
 └── packages/               # Agent packages (not in git)
     ├── coder-2.1.0.ko.tar.gz
     └── ...

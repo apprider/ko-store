@@ -121,6 +121,12 @@
       "type": "object",
       "description": "Execution configuration for autonomous agents"
     },
+    "executionProfile": {
+      "type": "string",
+      "enum": ["quick", "durable"],
+      "default": "durable",
+      "description": "Cadence hint for the durable task scheduler. 'durable' (default) = paced ticks (~10 min) for long-running background work; 'quick' = fast ticks (~30 s) for short, interactive multi-step jobs."
+    },
     "requirements": {
       "type": "array",
       "description": "Runtime requirements"
