@@ -1,19 +1,19 @@
 {
-  "$schema": "https://raw.githubusercontent.com/apprider/moona-store/main/schemas/agent-manifest-v1.json",
-  "id": "ai.moona.agents.coder",
+  "$schema": "https://raw.githubusercontent.com/apprider/ko-store/main/schemas/agent-manifest-v1.json",
+  "id": "ai.ko.agents.coder",
   "name": "coder",
   "version": "2.1.0",
   "displayName": "Coder \ud83d\udcbb",
   "description": "Expert software engineer for code generation, review, and debugging",
   "longDescription": "Coder is an expert software engineer agent specialized in reading, writing, and analyzing code. It supports 50+ programming languages with deep expertise in Rust, Python, TypeScript, and Go.",
   "author": {
-    "name": "Moona AI",
-    "email": "agents@moona.run",
-    "url": "https://moona.run"
+    "name": "Ko AI",
+    "email": "agents@ko.run",
+    "url": "https://ko.run"
   },
   "license": "MIT",
-  "homepage": "https://moona.run/agents/coder",
-  "repository": "https://github.com/apprider/moona",
+  "homepage": "https://ko.run/agents/coder",
+  "repository": "https://github.com/apprider/ko",
   "category": "development",
   "tags": [
     "coding",
@@ -60,7 +60,7 @@
   "dependencies": {
     "agents": [
       {
-        "id": "ai.moona.agents.researcher",
+        "id": "ai.ko.agents.researcher",
         "version": ">=1.0.0",
         "optional": true,
         "purpose": "Web research for complex queries"
@@ -130,7 +130,7 @@
     ],
     "extensions": [
       {
-        "uri": "https://moona.run/extensions/memory",
+        "uri": "https://ko.run/extensions/memory",
         "required": false,
         "description": "Persistent memory support"
       }

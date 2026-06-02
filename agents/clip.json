@@ -1,6 +1,6 @@
 {
   "$schema": "../schemas/agent-manifest-v1.json",
-  "id": "ai.moona.clip",
+  "id": "ai.ko.clip",
   "name": "clip",
   "displayName": "Clip",
   "version": "1.0.0",

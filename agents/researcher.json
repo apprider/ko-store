@@ -1,19 +1,19 @@
 {
-  "$schema": "https://raw.githubusercontent.com/apprider/moona-store/main/schemas/agent-manifest-v1.json",
-  "id": "ai.moona.agents.researcher",
+  "$schema": "https://raw.githubusercontent.com/apprider/ko-store/main/schemas/agent-manifest-v1.json",
+  "id": "ai.ko.agents.researcher",
   "name": "researcher",
   "version": "1.5.0",
   "displayName": "Researcher \ud83d\udd0d",
   "description": "Web research and information synthesis agent",
   "longDescription": "Researcher specializes in finding, analyzing, and synthesizing information from the web. It can search multiple sources, compare findings, and produce comprehensive research reports.",
   "author": {
-    "name": "Moona AI",
-    "email": "agents@moona.run",
-    "url": "https://moona.run"
+    "name": "Ko AI",
+    "email": "agents@ko.run",
+    "url": "https://ko.run"
   },
   "license": "MIT",
-  "homepage": "https://moona.run/agents/researcher",
-  "repository": "https://github.com/apprider/moona",
+  "homepage": "https://ko.run/agents/researcher",
+  "repository": "https://github.com/apprider/ko",
   "category": "research",
   "tags": [
     "research",

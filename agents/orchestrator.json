@@ -1,19 +1,19 @@
 {
-  "$schema": "https://raw.githubusercontent.com/apprider/moona-store/main/schemas/agent-manifest-v1.json",
-  "id": "ai.moona.agents.orchestrator",
+  "$schema": "https://raw.githubusercontent.com/apprider/ko-store/main/schemas/agent-manifest-v1.json",
+  "id": "ai.ko.agents.orchestrator",
   "name": "orchestrator",
   "version": "1.0.0",
   "displayName": "Orchestrator \ud83c\udfbc",
   "description": "Multi-agent coordination and task delegation",
   "longDescription": "Orchestrator manages complex tasks by delegating work to specialized agents. It breaks down projects, assigns tasks, monitors progress, and synthesizes results from multiple agents.",
   "author": {
-    "name": "Moona AI",
-    "email": "agents@moona.run",
-    "url": "https://moona.run"
+    "name": "Ko AI",
+    "email": "agents@ko.run",
+    "url": "https://ko.run"
   },
   "license": "MIT",
-  "homepage": "https://moona.run/agents/orchestrator",
-  "repository": "https://github.com/apprider/moona",
+  "homepage": "https://ko.run/agents/orchestrator",
+  "repository": "https://github.com/apprider/ko",
   "category": "automation",
   "tags": [
     "orchestration",
@@ -44,13 +44,13 @@
   "dependencies": {
     "agents": [
       {
-        "id": "ai.moona.agents.coder",
+        "id": "ai.ko.agents.coder",
         "version": ">=2.0.0",
         "optional": false,
         "purpose": "Code generation and modification tasks"
       },
       {
-        "id": "ai.moona.agents.researcher",
+        "id": "ai.ko.agents.researcher",
         "version": ">=1.0.0",
         "optional": false,
         "purpose": "Research and information gathering"

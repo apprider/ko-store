@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://moona.run/schemas/agent-manifest-v1.json",
-  "title": "Moona Agent Manifest",
-  "description": "Schema for Moona Agent OS agent package manifest",
+  "$id": "https://ko.run/schemas/agent-manifest-v1.json",
+  "title": "Ko Agent Manifest",
+  "description": "Schema for Ko Agent OS agent package manifest",
   "type": "object",
   "required": ["id", "name", "version", "runtime"],
   "additionalProperties": false,
@@ -15,8 +15,8 @@
     "id": {
       "type": "string",
       "pattern": "^[a-z0-9]+(\\.[a-z0-9]+)+$",
-      "description": "Unique agent identifier in reverse-domain notation (e.g., ai.moona.agents.coder)",
-      "examples": ["ai.moona.agents.coder", "ai.moona.agents.researcher"]
+      "description": "Unique agent identifier in reverse-domain notation (e.g., ai.ko.agents.coder)",
+      "examples": ["ai.ko.agents.coder", "ai.ko.agents.researcher"]
     },
     "name": {
       "type": "string",
@@ -540,11 +540,11 @@
         },
         "minVersion": {
           "type": "string",
-          "description": "Minimum Moona OS version required"
+          "description": "Minimum Ko OS version required"
         },
         "maxVersion": {
           "type": "string",
-          "description": "Maximum Moona OS version supported (empty = any)"
+          "description": "Maximum Ko OS version supported (empty = any)"
         },
         "platforms": {
           "type": "array",
