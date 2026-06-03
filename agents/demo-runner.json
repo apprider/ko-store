@@ -35,7 +35,9 @@
     },
     "systemPrompt": "system_prompt.md"
   },
-  "executionProfile": "quick",
+  "execution": {
+    "profile": "quick"
+  },
   "resources": {
     "maxLlmTokensPerHour": 200000,
     "maxConcurrentTools": 3,

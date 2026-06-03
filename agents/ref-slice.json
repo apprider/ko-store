@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/apprider/ko-store/main/schemas/agent-manifest-v1.json",
+  "id": "ai.ko.reference.slice",
+  "name": "ref-slice",
+  "displayName": "Reference Slice Agent",
+  "version": "0.1.0",
+  "description": "Minimal conforming slice agent — the smallest thing that installs and runs on Ko's native agentic loop.",
+  "author": {
+    "name": "Ko AI",
+    "email": "agents@ko.run",
+    "url": "https://ko.run"
+  },
+  "license": "MIT",
+  "category": "other",
+  "runtime": {
+    "type": "llm",
+    "systemPrompt": "You are a minimal reference agent. Do the task, then stop."
+  },
+  "execution": {
+    "engine": "slice",
+    "profile": "quick"
+  }
+}
