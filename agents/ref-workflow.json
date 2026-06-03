@@ -25,7 +25,7 @@
       "steps": [
         {
           "name": "echo",
-          "agent": { "name": "Reference Workflow Agent" },
+          "agent": { "name": "ref-workflow" },
           "prompt_template": "Repeat this back verbatim: {{input}}",
           "mode": "sequential"
         }
