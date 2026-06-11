@@ -71,40 +71,6 @@
       "downloads": 0,
       "verified": true,
       "license": "MIT"
-    },
-    {
-      "id": "ai.ko.reference.slice",
-      "name": "ref-slice",
-      "displayName": "Reference Slice Agent",
-      "version": "0.1.0",
-      "description": "Minimal conforming slice agent — the smallest thing that installs and runs on Ko's native agentic loop.",
-      "author": "Ko AI",
-      "category": "other",
-      "tags": ["reference", "slice", "starter"],
-      "manifestUrl": "agents/ref-slice.json",
-      "downloadUrl": "packages/ref-slice-0.1.0.ko.tar.gz",
-      "signatureUrl": "signatures/ref-slice-0.1.0.sig",
-      "rating": 0,
-      "downloads": 0,
-      "verified": true,
-      "license": "MIT"
-    },
-    {
-      "id": "ai.ko.reference.workflow",
-      "name": "ref-workflow",
-      "displayName": "Reference Workflow Agent",
-      "version": "0.1.0",
-      "description": "Minimal conforming workflow agent — proves the workflow engine is reachable behind the OS execution contract.",
-      "author": "Ko AI",
-      "category": "other",
-      "tags": ["reference", "workflow", "starter"],
-      "manifestUrl": "agents/ref-workflow.json",
-      "downloadUrl": "packages/ref-workflow-0.1.0.ko.tar.gz",
-      "signatureUrl": "signatures/ref-workflow-0.1.0.sig",
-      "rating": 0,
-      "downloads": 0,
-      "verified": true,
-      "license": "MIT"
     }
   ],
   "categories": [
@@ -121,10 +87,10 @@
     {"id": "education", "name": "Education", "icon": "📚", "count": 0},
     {"id": "creative", "name": "Creative", "icon": "🎨", "count": 0},
     {"id": "productivity", "name": "Productivity", "icon": "🚀", "count": 1},
-    {"id": "other", "name": "Other", "icon": "📦", "count": 2}
+    {"id": "other", "name": "Other", "icon": "📦", "count": 0}
   ],
   "stats": {
-    "totalAgents": 6,
+    "totalAgents": 4,
     "totalDownloads": 25557,
     "averageRating": 4.8
   }

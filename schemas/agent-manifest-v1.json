@@ -119,23 +119,13 @@
     },
     "execution": {
       "type": "object",
-      "description": "Execution configuration for autonomous agents. Absent ⇒ a simple reactive agent (answers messages; no engine, no job loop).",
+      "description": "Optional hints for delegated background work. Absent ⇒ reactive app (answers when called; OS slice driver activates when Ko delegates a task).",
       "properties": {
-        "engine": {
-          "type": "string",
-          "enum": ["slice", "workflow"],
-          "default": "slice",
-          "description": "Which OS execution engine drives this agent's jobs. Omitted ⇒ 'slice'. 'workflow' requires a 'workflow' definition (enforced at install)."
-        },
         "profile": {
           "type": "string",
           "enum": ["quick", "durable"],
           "default": "durable",
-          "description": "Worker-loop cadence hint. 'durable' = paced ticks for long-running work; 'quick' = fast ticks for short interactive multi-step jobs."
-        },
-        "workflow": {
-          "type": "object",
-          "description": "Workflow definition, required when engine='workflow': { name, description?, steps[] }."
+          "description": "Worker-loop cadence when this app has an active delegated task. 'durable' = paced ticks; 'quick' = faster ticks (~30s)."
         }
       }
     },

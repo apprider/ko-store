@@ -1,26 +1,29 @@
-# Ko Agent Marketplace
+# Ko Agent Store (ko-store)
 
-This directory contains the marketplace data for Ko Agent OS.
+Installable **apps** for Ko Agent OS. Ko is the supervisor; store agents are
+delegated workers enabled per Space.
+
+**Author contract:** [`MANIFEST.md`](MANIFEST.md)  
+**OS carve-out plan:** [`../docs/internal/plans/2026-06-12-phase1-app-manifest-contract.md`](../docs/internal/plans/2026-06-12-phase1-app-manifest-contract.md)
 
 ## Structure
 
 ```
-marketplace/
-├── index.json              # Marketplace index (list of all agents)
+ko-store/
+├── index.json                    # Store catalog (installable apps only)
+├── MANIFEST.md                   # App manifest contract for publishers
 ├── schemas/
-│   └── agent-manifest-v1.json  # JSON Schema for agent manifests
-├── agents/
-│   ├── coder.json          # Agent manifests
+│   └── agent-manifest-v1.json    # JSON Schema
+├── agents/                       # Public app manifests
+│   ├── coder.json
 │   ├── coder/system_prompt.md
 │   ├── researcher.json
-│   ├── researcher/system_prompt.md
-│   ├── clip.json
-│   ├── clip/system_prompt.md
 │   ├── demo-runner.json
-│   └── demo-runner/system_prompt.md
-└── packages/               # Agent packages (not in git)
-    ├── coder-2.1.0.ko.tar.gz
-    └── ...
+│   └── …
+├── workflows/                    # Bundled pipeline examples (not app engines)
+│   └── echo-pipeline.json
+├── samples/                      # Reserved (fixtures live in korun tests)
+└── packages/                     # Release tarballs (not always in git)
 ```
 
 ## Using the Marketplace
@@ -56,7 +59,9 @@ All agents must have a valid JSON manifest conforming to `schemas/agent-manifest
 - `id` - Unique identifier (reverse-domain notation, e.g., `ai.ko.agents.coder`)
 - `name` - Short name for CLI commands
 - `version` - Semantic version
-- `runtime` - Runtime configuration including LLM model
+- `runtime` - Runtime configuration (`type`, system prompt)
+
+See [`MANIFEST.md`](MANIFEST.md) for the full contract. Apps do not declare OS engines.
 
 ### Example Manifest
 

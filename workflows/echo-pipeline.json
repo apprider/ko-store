@@ -1,0 +1,12 @@
+{
+  "name": "Echo Pipeline",
+  "description": "Single step that echoes the input — smallest runnable workflow. Bundled asset example; not tied to an app manifest execution.engine.",
+  "steps": [
+    {
+      "name": "echo",
+      "agent": { "name": "ko" },
+      "prompt_template": "Repeat this back verbatim: {{input}}",
+      "mode": "sequential"
+    }
+  ]
+}
