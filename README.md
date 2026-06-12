@@ -18,7 +18,9 @@ ko-store/
 │   ├── coder.json
 │   ├── coder/system_prompt.md
 │   ├── researcher.json
+│   ├── clip.json
 │   ├── demo-runner.json
+│   ├── expedia.json
 │   └── …
 ├── workflows/                    # Bundled pipeline examples (not app engines)
 │   └── echo-pipeline.json

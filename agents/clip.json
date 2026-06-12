@@ -20,8 +20,8 @@
   ],
   "runtime": {
     "type": "llm",
-    "schedule": "autonomous",
-    "systemPrompt": "file://system_prompt.md",
+    "schedule": "on_demand",
+    "systemPrompt": "system_prompt.md",
     "model": {
       "provider": "default",
       "name": "default",
@@ -32,11 +32,7 @@
     }
   },
   "execution": {
-    "maxIterations": 40,
-    "heartbeatIntervalSecs": 60,
-    "checkIntervalSecs": 3600,
-    "maxRestarts": 10,
-    "allowHeartbeatRequest": true
+    "profile": "durable"
   },
   "resources": {
     "maxLlmTokensPerHour": 500000,

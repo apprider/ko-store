@@ -1,0 +1,115 @@
+{
+  "$schema": "https://raw.githubusercontent.com/apprider/ko-store/main/schemas/agent-manifest-v1.json",
+  "id": "ai.example.expedia",
+  "name": "expedia",
+  "version": "1.0.0",
+  "displayName": "Expedia ✈️",
+  "description": "Search and compare flights and hotels for your trips (simulated demo)",
+  "longDescription": "Expedia is the canonical travel-app shape for Ko's marketplace: tools, permissions, and integrations — no OS engine declaration. This Phase 5 fixture simulates itinerary research and booking flows so Ko can demonstrate delegate_task end-to-end. A production build would connect Expedia OAuth via MCP.",
+  "author": {
+    "name": "Ko AI",
+    "email": "agents@ko.run",
+    "url": "https://ko.run"
+  },
+  "license": "MIT",
+  "homepage": "https://ko.run/agents/expedia",
+  "repository": "https://github.com/apprider/ko-store",
+  "category": "productivity",
+  "tags": [
+    "travel",
+    "flights",
+    "hotels",
+    "booking",
+    "demo"
+  ],
+  "runtime": {
+    "type": "llm",
+    "schedule": "on_demand",
+    "model": {
+      "provider": "default",
+      "name": "default",
+      "params": {
+        "temperature": 0.4,
+        "maxTokens": 4096
+      }
+    },
+    "systemPrompt": "system_prompt.md"
+  },
+  "a2a": {
+    "enabled": true,
+    "endpoint": "/a2a/expedia",
+    "capabilities": {
+      "streaming": true,
+      "pushNotifications": false,
+      "contentTypes": [
+        "text/plain",
+        "text/markdown",
+        "application/json"
+      ]
+    },
+    "skills": [
+      {
+        "id": "plan_trip",
+        "name": "Plan a Trip",
+        "description": "Research flights and hotels for a destination and date range",
+        "tags": [
+          "travel",
+          "flights",
+          "hotels"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "destination": { "type": "string" },
+            "depart_date": { "type": "string" },
+            "return_date": { "type": "string" },
+            "travelers": { "type": "integer" }
+          }
+        }
+      }
+    ]
+  },
+  "tools": {
+    "builtin": [
+      "web_fetch",
+      "memory_store",
+      "memory_recall"
+    ],
+    "extensions": [],
+    "mcp": []
+  },
+  "permissions": {
+    "network": [
+      "api.expedia.com",
+      "*.expedia.com"
+    ],
+    "filesystem": {
+      "read": [],
+      "write": [],
+      "delete": []
+    },
+    "memory": {
+      "read": ["self.*"],
+      "write": ["self.*"]
+    }
+  },
+  "dependencies": {
+    "mcpServers": [
+      {
+        "name": "expedia",
+        "tools": ["search_flights", "search_hotels"]
+      }
+    ]
+  },
+  "security": {
+    "trustLevel": "standard",
+    "requiresApprovalFor": [],
+    "auditLevel": "basic"
+  },
+  "marketplace": {
+    "visibility": "public",
+    "pricing": "free",
+    "minVersion": "0.5.0",
+    "platforms": ["linux", "macos", "windows"]
+  }
+}

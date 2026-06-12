@@ -119,7 +119,8 @@
     },
     "execution": {
       "type": "object",
-      "description": "Optional hints for delegated background work. Absent ⇒ reactive app (answers when called; OS slice driver activates when Ko delegates a task).",
+      "description": "Optional cadence hint for delegated background work. Absent ⇒ reactive app (answers when called; OS slice driver activates when Ko delegates a task). Do not declare execution.engine or execution.workflow — the OS owns scheduling.",
+      "additionalProperties": false,
       "properties": {
         "profile": {
           "type": "string",

@@ -44,7 +44,9 @@ Do not declare `execution.engine` or `execution.workflow` — removed from the s
 |---|---|
 | `agents/coder.json` | Full-featured app — no `execution` block |
 | `agents/researcher.json` | Research app — no `execution` block |
-| `agents/demo-runner.json` | Durable delegated demo — `execution.profile` only |
+| `agents/clip.json` | Long-running video jobs — `execution.profile: durable` only |
+| `agents/expedia.json` | Travel demo — no `execution` block |
+| `agents/demo-runner.json` | Durable delegated demo — `execution.profile: quick` |
 
 ## Bundled workflows (optional, Phase 3+)
 

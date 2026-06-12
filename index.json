@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Ko Agent Marketplace Index",
   "version": "1.0.0",
-  "updated": "2026-06-02T00:00:00Z",
+  "updated": "2026-06-12T00:00:00Z",
   "agents": [
     {
       "id": "ai.ko.agents.coder",
@@ -56,6 +56,23 @@
       "license": "MIT"
     },
     {
+      "id": "ai.example.expedia",
+      "name": "expedia",
+      "displayName": "Expedia ✈️",
+      "version": "1.0.0",
+      "description": "Search and compare flights and hotels for your trips (simulated demo)",
+      "author": "Ko AI",
+      "category": "productivity",
+      "tags": ["travel", "flights", "hotels", "booking"],
+      "manifestUrl": "agents/expedia.json",
+      "downloadUrl": "packages/expedia-1.0.0.ko.tar.gz",
+      "signatureUrl": "signatures/expedia-1.0.0.sig",
+      "rating": 4.8,
+      "downloads": 0,
+      "verified": true,
+      "license": "MIT"
+    },
+    {
       "id": "ai.ko.agents.demorunner",
       "name": "demo-runner",
       "displayName": "Demo Runner 🧪",
@@ -86,11 +103,11 @@
     {"id": "health", "name": "Health", "icon": "🏥", "count": 0},
     {"id": "education", "name": "Education", "icon": "📚", "count": 0},
     {"id": "creative", "name": "Creative", "icon": "🎨", "count": 0},
-    {"id": "productivity", "name": "Productivity", "icon": "🚀", "count": 1},
+    {"id": "productivity", "name": "Productivity", "icon": "🚀", "count": 2},
     {"id": "other", "name": "Other", "icon": "📦", "count": 0}
   ],
   "stats": {
-    "totalAgents": 4,
+    "totalAgents": 5,
     "totalDownloads": 25557,
     "averageRating": 4.8
   }
